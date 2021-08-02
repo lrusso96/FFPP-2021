@@ -1,0 +1,80 @@
+\startenvironment book_setup_std
+
+\setupbodyfont[modern]
+
+\setuphead[chapter][conversion=A]
+
+\definecolor[primarycolor][darkgreen]
+
+\setuphead[problem][
+    textstyle=\bfx,
+    after=\nowhitespace
+]
+
+\setuphead[chapter][
+    numbercolor=primarycolor,
+    numberstyle=\bfc
+]
+
+%\setupstartstop[
+%    before={\blank\inmargin{\rotate[rotation=270]{{\tfxx Solution}}}},
+%    after=\blank
+%]
+
+\setuppagenumbering[location=footer]
+
+\startuseMPgraphic{mpos:region:aside}
+for i=1 upto nofmultipars :
+multipars[i] := multipars[i] leftenlarged ExHeight ;
+endfor ;
+draw_multi_pars ;
+draw_multi_side ;
+\stopuseMPgraphic
+
+\definecolor[back:one][.90(darkyellow,white)]
+\definecolor[back:two][.80(orange,white)]
+\definecolor[back:three][.90(darkgreen,white)]
+
+\definetextbackground
+[framedbg]
+[location=paragraph,
+    before=\blank,
+    after=\blank,
+    mp=mpos:region:aside,
+    topoffset=.5ex,
+    leftoffset=0pt,
+    rightoffset=1ex,
+    bottomoffset=.5ex,
+    frame=off,
+    leftframe=on,
+    frameoffset=1ex,
+    rulethickness=2pt,
+    framecolor=darkcyan,
+    background=color,
+    backgroundcolor=back:one]
+
+\definetextbackground
+[solution]
+[framedbg]
+[framecolor=darkgreen,
+    backgroundcolor=back:three]
+
+\definetextbackground
+[warning]
+[framedbg]
+[
+    framecolor=orange,
+    backgroundcolor=back:two,
+    before=\blank
+]
+
+\definetextbackground
+[aside]
+[framedbg]
+[
+    framecolor=darkmagenta,
+    backgroundcolor=back:one,
+    before=\blank
+]
+
+\stopenvironment
