@@ -1,0 +1,66 @@
+\startcomponent *
+
+
+\startchapter[title=Probabilistic Checkable Proofs]
+
+\problem[title=B0.1 (Basics of linear codes)]
+\startwarning
+Add exercise and its solution.
+\stopwarning
+
+\problem[title=B0.2 (Identity testing)]
+Fix an arbitrary string $s \in \Sigma^n$ and $\epsilon = \epsilon(n) \in \bits$.
+Show that the query complexity of detecting whether an unknown string $x \in \Sigma^n$ is equal to $s$ or differs from $s$ in at least an $\epsilon$ fraction of locations is $\Theta(1 / \epsilon)$.
+That is:
+\startitemize[n]
+\item Construct an algorithm that makes $O(1 / \epsilon)$ queries to $x$, and always accepts if $x = s$ and rejects with probability at least $2/3$ if $x$ is $\epsilon$-far from $s$.
+\item Argue that no algorithm making $o(1 / \epsilon)$ queries satisfies both conditions.
+\stopitemize
+\startwarning
+Add solution.
+\stopwarning
+
+\problem[title=B0.3 (Hadamard code)]
+The code ${\rm Had}: \field^k \to \field^{|\field|^k}$ is defined as ${\rm Had}(x) := (\langle x, y\rangle)_{y\in\field^k}$ (i.e., the encoding of $x$ is the linear function ${\rm Had(x)}: \field^k \to \field$ where ${\rm Had}(x)(y) = \langle x, y \rangle)$.
+Show that Had has relative distance $1 − 1/|\field|$.
+    {\tfx(Despite its exponential block length, this code has important features that will be useful in this course: local testability and local decodability.)
+    }
+
+\startwarning
+Add solution.
+\stopwarning
+
+\problem[title=B1.0 (From many to 2 queries)]
+Prove that $\LL$ has a PCP with perfect completeness, soundness error $1 - \frac{1-\epsilon}{q}$, alphabet $\Sigma^q$, proof length $l + 2^r$, and query complexity 2. (In other words, one can always reduce query complexity to 2, incurring a loss in soundness error and alphabet size.)
+
+\startwarning
+Add solution.
+\stopwarning
+
+\problem[title=B1.2 (Lower bound on soundness error)]
+Suppose that there exists $x \notin \LL$ such that for every choice of verifier randomness $\rho \in \bits^r$ there exists a proof $\pi \in \Sigma^l$ such that $V^\pi(x; \rho) = 1$.
+Prove that $\epsilon \ge 2^{-q \log{|\Sigma|}}$.
+
+\startwarning
+Add solution.
+\stopwarning
+
+\problem[title=B1.3 (More on lower bounds)]
+The Exponential Time Hypothesis (ETH) states that 3SAT cannot be decided by any deterministic algorithm running in time $2^{o(n)}$.
+Prove that, assuming ETH, if $\LL$ = 3SAT and $r + q \log{|\Sigma|} = o(n)$, then $\epsilon \ge 2^{−q \log{|\Sigma|}}$.
+(Hint: prove that ETH implies the assumption to the prior problem.)
+
+\startwarning
+Add solution.
+\stopwarning
+
+\problem[title=B2.1 (Affine function testing)]
+A function $f: \field^n \to \field$ is affine if there exists a vector $a \in \field^n$ and constant $\beta \in \field$ such that $f(x) = \sum_{i\in [n]} a_i x_i + \beta$.
+Design and analyze a 4-query test for the set of affine functions.
+Hint: reduce the problem to linearity testing, and rely on the BLR test for linear functions.
+
+\startwarning
+Add solution.
+\stopwarning
+
+\stopcomponent

@@ -1,0 +1,168 @@
+\startcomponent *
+
+\startchapter[title=Interactive Proofs]
+
+\startproblem[title=A0.1 (Restriction to a line)]
+A {\em line} in $\field_n$ is a function $g: \field \to \field_n$ of the form $g(z) = (a_1z + b_1, \dots , a_n z + b_n)$ for some choice of coefficients $a_1, b_1, \dots, a_n, b_n \in \field$.
+The {\em restriction} of an $n$-variate polynomial $f(x_1, \dots , x_n)$ over $\field$ to the line $g$ is defined as the univariate polynomial
+$h(z) := f(g(z))$.
+Prove that for every line $g$, the degree of $h$ is at most the total degree of $f$.
+\stopproblem
+
+\startsolution
+$h(z) = f(g(z)) = f(a_1z + b_1, \dots , a_n z + b_n) = f(z_1', \dots , z_n')$, where $z_i' = a_i z + b_i$.
+Since deg($z$) is at least deg($z'$), the total degree of $h$ is at most the total degree of $f$.
+\stopsolution
+
+Next we prove the Schwartz–Zippel Lemma: for every non-zero $n$-variate polynomial $f$ of total degree at most $d$ over a field $\field$ and every finite set $S$ in $\field$, $\Pr_{a_1,\dots,a_n \gets S}[f(a_1, \dots , a_n) = 0]\le \frac{d}{|S|}$. This fundamental lemma is used numerous times in this course.
+
+\problem[title=A0.2 (Zeroes of univariate polynomials)]
+Let $\field$ be a field and $f$ a non-zero univariate polynomial over $\field$ of degree at most $d$.
+Prove that $f$ has at most $d$ roots in $\field$ (you may use
+without proof the fact that $\field[X]$ is a Euclidean domain).
+(In particular, for every finite set $S \subseteq \field, \Pr_{a\gets S}[f(a) = 0] \le \frac{d}{|S|}$.)
+Give an example of a finite field $F$ and polynomial $f \in \field[X]$ that has strictly fewer than deg($f$) roots in $\field$.
+
+\startsolution
+Assume $f$ is a non-zero polynomial of degree at most $d$ that has $n \ge d+1$ roots.
+Then it must be the case we can rewrite $f$ as $\alpha_0(x-\alpha_1)(x-\alpha_2)\dots(x-\alpha_n)$ = $\alpha_0 \prod_{i=1}^n (x-\alpha_i)$, where $\alpha_i \in \field$ and $\alpha_0 \ne 0$.
+But this implies that $f$ has degree $n > d$ because of the term $\alpha_0 x^n$.
+A polynomial of degree $d$ has at most $d$ distinct roots.
+It implies that for every finite set $S \subseteq \field$, $\Pr_{a\gets S}[f(a) = 0] \le \frac{deg(f)}{|S|} \le \frac{d}{|S|}$.)
+\stopsolution
+
+\problem[title=A0.3 (Zeroes of multivariate polynomials)]
+Let $\field$ be a field and $f$ a non-zero $n$-variate polynomial over $\field$ of degree at most $d$.
+Prove that, for every finite set $S$ in $\field$, $f$ has at most $d|S|^{n−1}$ roots in $S^n$.
+    {\tfx(Hint: rely on the prior problem, and use induction.)}
+Conclude from this the Schwartz–Zippel Lemma.
+
+\startaside
+Proof strategy: prove by induction.
+\stopaside
+
+\problem[title=A1.1 (Importance of randomness)]
+Prove that if a language $\LL$ has an interactive proof with a deterministic verifier, then $\LL \in$ NP.
+
+\startsolution
+First, note that when the verifier is deterministic we can only consider proofs with perfect soundness, i.e. $\forall x \notin \LL$, the verifier rejects the proof.
+An NP proof for $x \in \LL$ is just a transcript $(\alpha_1, \alpha_2, \dots, \alpha_n)$ of the interaction Prover-Verifier on input $x$.
+Indeed, the verifier of NP can simply check that the transcript is valid and makes the verifier of IP to accept, namely: $V(x, \alpha_1) = \alpha_2$, and $V(x, \alpha_1, \alpha_2, \alpha_3) = \alpha_3$, \dots, and finally $V(\alpha_1, \dots, \alpha_n) = 1$.
+\stopsolution
+
+\problem[title=A1.2 (Sequential repetition)]
+Suppose that $L$ has an interactive proof $(P, V)$ with perfect completeness and soundness error $1/2$.
+Let $(P_t, V_t)$ be the $t$-wise sequential repetition of $(P, V)$: the
+new prover $P_t$ and the new verifier $V_t$ respectively simulate the old prover $P$ and old verifier $V$ for $t$ times one after the other, each time with fresh randomness; $V_t$ accepts if and only if $V$ accepts in all $t$ repetitions.
+Prove that $(P_t, V_t)$ is an interactive proof for $L$ with perfect completeness and soundness error $2^{−t}$.
+
+\startsolution
+Each execution is independent.
+It means that whenever $x \in \LL$, the honest prover can convince with probability 1 the verifier at each round.
+If $x \notin \LL$, the malicious prover can convince the verifier to accept with probability at most $1/2$ in each round, but since these runs are independent, the overall probability to convince the verifier is at most the probability to successfully cheat for $t$ consecutive times, i.e. $2^{-t}$.
+\stopsolution
+
+\problem[title=A1.3 (Invertible matrices)]
+Let $\field$ be a finite field.
+Show that the language
+
+\startformula
+{\rm INV}_\field := \{M \in \field^{n\times n}: \exists A \in F^{n\times n} {\rm\;s.t.\;} MA = I\}
+\stopformula
+has an interactive proof with perfect completeness, soundness error $1/2$, and $O(n)$ total communication, where the verifier runs in time $O(n^2)$.
+(Assume that sampling field elements and performing basic field operations have unit cost.)
+
+\startsolution
+The verifier picks a random vector $x \in \field^n$ and computes in $O(n^2)$ steps the product $y=Mx$.
+Then it sends $y$ to the prover.
+The prover computes $x' = M^{-1}y$ and sends it to the verifier that checks whether $x = x'$.
+Completeness is straigthforward since for every $M \in \LL$, it always holds that the honestly computed $x'$ is equal to $x$.
+As for the soundness, when the matrix $M$ is not invertible, it means there are at least two vectors $x_1, x_2$ such that $Mx_i = y$.
+\stopsolution
+
+\startaside
+An alternative approach is the following. The verifier picks a random vector $y \in \field^n$ and sends it to the prover. The prover computes $x = M^{-1}y$ and sends this vector to the verifier that accepts if $Mx = y$.
+We have seen that this latter protocol is public-coin, but is not zero-knowledge, while the former is private-coin and zero-knowledge.
+\stopaside
+
+\problem[title=A2.1 (Sumcheck with tensor weights)]
+We consider an extension of the sumcheck problem where the summand is multiplied by weights that have a product structure.
+Specifically, given $n \cdot |H|$ field elements $\{\delta_{i, \alpha} \in \field\}_{i \in [n], \alpha \in H}$, we consider statements of the following form:
+\startformula
+\sum_{\alpha_1, \dots, \alpha_n \in H} \delta_{1, \alpha_1} \cdot\cdot\cdot\delta_{n, \alpha_n}\cdot p(\alpha_1, \dots, \alpha_n) = \gamma.
+\stopformula
+Show that the sumcheck protocol can be extended to support the above statement, with the same completeness and soundness guarantees.
+
+\startaside
+Slighty modify the sumcheck protocol to \quotation{inject} the term $\delta_{i, \alpha_i}$.
+\stopaside
+
+\problem[title=A2.2 (Efficient multilinear extension)]
+The multilinear extension of a boolean function $f: \bits^n \to \bits$ over a field $\field$ is the unique multilinear polynomial ${\rm MLE}_\field(f) \in \field[X_1, \dots , X_n]$ that agrees with $f$ on ${\bits^n}$:
+\startformula
+{\rm MLE}_\field(f)(X_1, \dots, X_n) := \sum_{b_1, \dots, b_n \in \bits} f(b_1, \dots, b_n) \prod_{i \in [n] \; b_i=1} X_i \prod_{i \in [n] \; b_i=0} (1- X_i).
+\stopformula
+Prove that evaluating a multilinear extension at a single point is in linear time.
+Namely, give an algorithm that given a boolean function $f$ (represented as a string of $2n$ bits), finite field $\field$, and evaluation point $(\alpha_1, \dots , \alpha_n) \in \field^n$, computes the evaluation of ${\rm MLE}_\field(f)$ at $(\alpha_1, \dots, \alpha_n)$ in $O(2^n)$ field operations.
+
+    {\tfx Hint: The multilinear extension can be evaluated by summing term by term in $\tfx O(n\cdot 2^n)$ field operations while maintaining a state of $\tfx O(1)$ field elements in memory. How can you use more memory to speed up the computation?}
+
+\startaside
+Precompute the exponentially large table of the products (use dynamic programming).
+Then, compute the summation.
+\stopaside
+
+\problem[title=A2.3 (Efficient sumcheck)]
+We analyze the running time of the honest prover in the sumcheck protocol, when proving statements of the form $\sum_{\alpha_1, \dots, \alpha_n \in H} p(\alpha_1, \dots, \alpha_n) = \gamma$.
+\startitemize
+\item Prove that the honest prover can be realized in $O(d \cdot |H|^n \cdot |p|$ operations, where $d$ is the individual degree of $p$ and $|p|$ is the number of operations to evaluate $p$ at any point in $\field^n$.
+\item Consider the special case where $H = \bits$ and $p$ is multilinear.
+Prove that, if $p$ is specified via its evaluations on $\bits^n$, the honest prover can be realized in $O(2^n)$ field operations.
+\stopitemize
+
+\startwarning
+Add proof.
+\stopwarning
+
+We work out Shamir’s original proof that IP = PSPACE, which relies on fully quantified boolean formulas with a special structure.
+We say that a fully quantified boolean formula is simple if every occurrence of every variable is separated from its quantification point by at most one universal quantifier ($\forall$) and arbitrarily many other symbols.
+We denote by TSQBF language obtained by considering only fully quantified boolean formulas that are simple.
+
+\problem[title=A3.1 (Warmup on TSQBF)]
+Which of the following fully quantified boolean formulas are simple? What is their value?
+\startwarning
+Add exercise and its solution.
+\stopwarning
+
+\problem[title=A3.2 \dots]
+\startwarning
+Add exercise and its solution.
+\stopwarning
+
+\problem[title=A3.3 (IP for TSQBF)]
+Outline an interactive proof for TSQBF. Hint: show that simple formulas have \quotation{nice} arithmetizations.
+\startwarning
+Add solution.
+\stopwarning
+
+\problem[title=A4.1 (Layered circuits)]
+Prove that any arithmetic circuit of depth $d$ and size $S$ can be transformed into a layered arithmetic circuit of depth $d$ and size $O(S^2)$.
+\startwarning
+Add solution.
+\stopwarning
+
+\problem[title=A4.2 (GKR for any set of gates)]
+The GKR protocol that we saw in class applies to layered arithmetic circuits, which by default involve two gates: addition gates and multiplication gates.
+Now suppose that we instead consider layered circuits where gates are selected from a gate set of bivariate polynomials $\{g_k(X, Y)\}_k$.
+(The special case of addition and multiplication thus corresponds to the gate set $\{g_1(X, Y) = X + Y, g_2(X, Y) = X \cdot Y\}$.)
+How would you modify the GKR protocol to support the evaluation of such circuits?
+\startwarning
+Add solution.
+\stopwarning
+
+\problem[title=A4.3 (GKR for formulas)]
+\startwarning
+Add exercise and its solution.
+\stopwarning
+
+\stopcomponent
