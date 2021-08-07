@@ -12,12 +12,21 @@ Add exercise and its solution.
 Fix an arbitrary string $s \in \Sigma^n$ and $\epsilon = \epsilon(n) \in \bits$.
 Show that the query complexity of detecting whether an unknown string $x \in \Sigma^n$ is equal to $s$ or differs from $s$ in at least an $\epsilon$ fraction of locations is $\Theta(1 / \epsilon)$.
 That is:
-\startitemize[n]
+\startitemize
 \item Construct an algorithm that makes $O(1 / \epsilon)$ queries to $x$, and always accepts if $x = s$ and rejects with probability at least $2/3$ if $x$ is $\epsilon$-far from $s$.
-\item Argue that no algorithm making $o(1 / \epsilon)$ queries satisfies both conditions.
+\stopitemize
+\startsolution
+    Consider the following algorithm: first we sample a coordinate $i \in [n]$ uniformly at random, then we query $x_i$ and we reject if $x_i \ne s_i$.
+    If $x = s$ this algorithm never rejects.
+    If $x$ is $\epsilon$-far from $s$, instead, it rejects with probability at least $\epsilon$, by definition.
+    If we repeat $t$ times the previous procedure, the probability to accept when $x$ is $\epsilon$-far from $s$ is at most $(1-\epsilon)^t \le e^{-t\epsilon}$.
+    For $t:= \frac{2}{\epsilon}$, this probability is at most $e^{-2} \le 1/3$.
+\stopsolution
+\startitemize
+    \item Argue that no algorithm making $o(1 / \epsilon)$ queries satisfies both conditions.
 \stopitemize
 \startwarning
-Add solution.
+    Add the solution of the second case.
 \stopwarning
 
 \problem[title=B0.3 (Hadamard code)]
@@ -26,9 +35,12 @@ Show that Had has relative distance $1 − 1/|\field|$.
     {\tfx(Despite its exponential block length, this code has important features that will be useful in this course: local testability and local decodability.)
     }
 
-\startwarning
-Add solution.
-\stopwarning
+\startsolution
+    Let $x_1, x_2 \in \field^k$.
+    $\langle x_1, y \rangle = \langle x_2, y \rangle$ that can be rewritten as $\langle x_1 - x_2, y \rangle = 0$ is a linear equation on $k$ variables that is satisfied exactly in the subspace $y^\perp$.
+    The fraction of elements of $\field^k$ that satisy it is therefore:
+    $\frac{|y^\perp|}{|\field|^k} = \frac{|\field|^{k-1}}{|\field|^k} = \frac{1}{|\field|}$.
+\stopsolution
 
 \problem[title=B1.0 (From many to 2 queries)]
 Prove that $\LL$ has a PCP with perfect completeness, soundness error $1 - \frac{1-\epsilon}{q}$, alphabet $\Sigma^q$, proof length $l + 2^r$, and query complexity 2. (In other words, one can always reduce query complexity to 2, incurring a loss in soundness error and alphabet size.)
